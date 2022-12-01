@@ -42,11 +42,26 @@ vector<string> split_str(string inp, string delim, bool ignore_empty = false) {
     return ret;
 }
 
+void solve() {
+    vector<string> lns = get_lines();
+    int sum = 0;
+    int max = 0;
+    for (string ln : lns) {
+        if (string_is_whitespace(ln)) {
+            if (sum > max) {
+                max = sum;
+            }
+            sum = 0;
+        } else {
+            sum += stoi(ln);
+        }
+    }
+    cout << max << "\n";
+}
+
 int main() {
     // ios_base::sync_with_stdio(false);
     // cin.tie(NULL);
 
-    cout << string_is_whitespace("  ") << "\n\n";
-    vector<string> lns = get_lines();
-    
+    solve();
 }
