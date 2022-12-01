@@ -54,6 +54,7 @@ void solve() {
             sum += stoi(ln);
         }
     }
+    cals.push_back(sum);
     sort(cals.begin(), cals.end());
     int total = cals[cals.size() - 1] + cals[cals.size() - 2] + cals[cals.size() - 3];
     cout << total << "\n";

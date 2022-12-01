@@ -5,3 +5,5 @@ data.*
 session
 *.out
 *.o
+*/p1
+*/p2

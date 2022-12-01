@@ -56,6 +56,9 @@ void solve() {
             sum += stoi(ln);
         }
     }
+    if (sum > max) {
+        max = sum;
+    }
     cout << max << "\n";
 }
 
