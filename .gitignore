@@ -4,3 +4,4 @@ data.*
 */.vscode/*
 session
 *.out
+*.o
