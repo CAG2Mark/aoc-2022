@@ -19,5 +19,5 @@ int main() {
     // cin.tie(NULL);
 
     vector<string> lns = get_lines();
-    for (auto ln : lns) cout << ln << "\n";
+    
 }
