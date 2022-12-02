@@ -1,0 +1,34 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-g",
+      "-std=c++11",
+      "-O2",
+      "-I../utils",
+      "-o",
+      "p2.o",
+      "p2.cpp"
+    ],
+    "directory": "/storage/mark/Repos/aoc-2022/day2",
+    "file": "/storage/mark/Repos/aoc-2022/day2/p2.cpp",
+    "output": "/storage/mark/Repos/aoc-2022/day2/p2.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-g",
+      "-std=c++11",
+      "-O2",
+      "-I../utils",
+      "-o",
+      "p1.o",
+      "p1.cpp"
+    ],
+    "directory": "/storage/mark/Repos/aoc-2022/day2",
+    "file": "/storage/mark/Repos/aoc-2022/day2/p1.cpp",
+    "output": "/storage/mark/Repos/aoc-2022/day2/p1.o"
+  }
+]
