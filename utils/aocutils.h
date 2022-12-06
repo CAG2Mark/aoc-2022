@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 std::vector<std::string> get_lines(std::string filename = "input");
@@ -18,9 +19,9 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &container) {
     typename std::vector<T>::const_iterator end = container.end();
     os << '[';
     for (typename std::vector<T>::const_iterator i = begin; i != end; ++i) {
-        os << *begin;
-        if (++begin != end)
+        if (i != begin)
             os << ", ";
+        os << *begin;
     }
     os << ']';
     return os;
@@ -32,9 +33,9 @@ std::ostream &operator<<(std::ostream &os, const std::deque<T> &container) {
     typename std::deque<T>::const_iterator end = container.end();
     os << '[';
     for (typename std::deque<T>::const_iterator i = begin; i != end; ++i) {
-        os << *begin;
-        if (++begin != end)
+        if (i != begin)
             os << ", ";
+        os << *begin;
     }
     os << ']';
     return os;
@@ -55,9 +56,39 @@ std::ostream &println_tuple_impl(
     return ((os << std::get<Is>(tuple) << (Is != last - 1 ? ", " : "")), ...);
 }
 
-template<typename ...Ts>
-std::ostream & operator<<(std::ostream& os, const std::tuple<Ts...> & container) {
+template <typename... Ts>
+std::ostream &operator<<(std::ostream &os, const std::tuple<Ts...> &container) {
     os << '(';
-    println_tuple_impl(os, container, std::index_sequence_for<Ts...>{});
+    println_tuple_impl(os, container, std::index_sequence_for<Ts...> {});
     return os << ')';
+}
+
+template <typename K, typename V>
+std::ostream &operator<<(std::ostream &os, const std::map<K, V> &container) {
+    os << '{';
+    auto begin = container.begin();
+    auto end = container.end();
+    for (auto i = begin; i != end; ++i) {
+        if (i != begin)
+            os << ", ";
+        auto a = *i;
+        os << std::get<0>(a) << ": " << std::get<1>(a);
+    }
+    os << '}';
+    return os;
+}
+
+template <typename K, typename V>
+std::ostream &operator<<(std::ostream &os, const std::unordered_map<K, V> &container) {
+    os << '{';
+    auto begin = container.begin();
+    auto end = container.end();
+    for (auto i = begin; i != end; ++i) {
+        if (i != begin)
+            os << ", ";
+        auto a = *i;
+        os << std::get<0>(a) << ": " << std::get<1>(a);
+    }
+    os << '}';
+    return os;
 }
