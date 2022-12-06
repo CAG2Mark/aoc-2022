@@ -1,7 +1,7 @@
 #include "aocutils.h"
 
-std::vector<std::string> get_lines() {
-    std::ifstream f("input");
+std::vector<std::string> get_lines(std::string filename) {
+    std::ifstream f(filename);
     std::string line;
 
     std::vector<std::string> ret;
