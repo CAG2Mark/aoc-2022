@@ -7,3 +7,4 @@ session
 *.o
 */p1
 */p2
+.clang-format
