@@ -1,5 +1,5 @@
-CC = g++
-CFLAGS = -g -std=c++11 
+CC = clang++
+CFLAGS = -g -std=c++17
 CFLAGS += -O2
 CFLAGS += -I../utils
 

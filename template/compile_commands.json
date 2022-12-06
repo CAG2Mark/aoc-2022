@@ -1,0 +1,32 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-c",
+      "-g",
+      "-O2",
+      "-I../utils",
+      "-o",
+      "p2.o",
+      "p2.cpp"
+    ],
+    "directory": "/storage/mark/Repos/aoc-2022/template",
+    "file": "/storage/mark/Repos/aoc-2022/template/p2.cpp",
+    "output": "/storage/mark/Repos/aoc-2022/template/p2.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-c",
+      "-g",
+      "-O2",
+      "-I../utils",
+      "-o",
+      "p1.o",
+      "p1.cpp"
+    ],
+    "directory": "/storage/mark/Repos/aoc-2022/template",
+    "file": "/storage/mark/Repos/aoc-2022/template/p1.cpp",
+    "output": "/storage/mark/Repos/aoc-2022/template/p1.o"
+  }
+]
