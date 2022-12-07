@@ -21,7 +21,7 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &container) {
     for (typename std::vector<T>::const_iterator i = begin; i != end; ++i) {
         if (i != begin)
             os << ", ";
-        os << *begin;
+        os << *i;
     }
     os << ']';
     return os;
@@ -35,7 +35,7 @@ std::ostream &operator<<(std::ostream &os, const std::deque<T> &container) {
     for (typename std::deque<T>::const_iterator i = begin; i != end; ++i) {
         if (i != begin)
             os << ", ";
-        os << *begin;
+        os << *i;
     }
     os << ']';
     return os;
