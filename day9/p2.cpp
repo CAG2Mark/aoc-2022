@@ -63,8 +63,6 @@ void solve(string filename) {
 
         for (int i = 0; i < move; ++i)
             perform_move(dir, x, y, points);
-
-        cout << x[9] << " " << y[9] << "\n";
     }
 
     points.insert(to_hash(x[9], y[9]));
