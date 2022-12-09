@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -g -std=c++11 
+CFLAGS = -g 
 CFLAGS += -O2
 CFLAGS += -I../utils -fsanitize=address,undefined
 
