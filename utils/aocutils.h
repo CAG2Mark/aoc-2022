@@ -41,6 +41,18 @@ std::ostream &operator<<(std::ostream &os, const std::deque<T> &container) {
     return os;
 }
 
+template <typename T, std::size_t N>
+std::ostream &operator<<(std::ostream &os, const std::array<T, N> &container) {
+    os << '[';
+    for (int i = 0; i < N; ++i) {
+        if (i != 0)
+            os << ", ";
+        os << container[i];
+    }
+    os << ']';
+    return os;
+}
+
 // Source: https://geo-ant.github.io/blog/2020/stream-insertion-for-tuples/
 template <typename... Ts, size_t... Is>
 std::ostream &println_tuple_impl(
@@ -79,7 +91,8 @@ std::ostream &operator<<(std::ostream &os, const std::map<K, V> &container) {
 }
 
 template <typename K, typename V>
-std::ostream &operator<<(std::ostream &os, const std::unordered_map<K, V> &container) {
+std::ostream &operator<<(
+    std::ostream &os, const std::unordered_map<K, V> &container) {
     os << '{';
     auto begin = container.begin();
     auto end = container.end();
