@@ -2,6 +2,7 @@ input*
 data.*
 .vim/*
 */.vscode/*
+*/.cache
 session
 *.out
 *.o
