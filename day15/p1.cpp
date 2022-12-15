@@ -15,7 +15,7 @@ struct Range {
 };
 
 ostream &operator<<(ostream &os, const Range &r) {
-    return os << "[" << r.low << ", " << r.up << "]";
+    return os << "[" << r.low << ", " << r.up << ")";
 }
 
 ostream &operator<<(ostream &os, const Sensor &r) {
@@ -27,7 +27,7 @@ Range getRowExcl(const Sensor &s, int row) {
 
     int rWidth = max(-1, radius - abs(row - s.y));
 
-    return { s.x - rWidth, s.x + rWidth };
+    return { s.x - rWidth, s.x + rWidth + 1};
 }
 
 void solve(string filename, int ROW = 10) {
@@ -102,12 +102,12 @@ void solve(string filename, int ROW = 10) {
     int sum = 0;
     for (Range &r : st) {
         for (int a : beacons_on_line) {
-            if (r.low <= a && a <= r.up) {
+            if (r.low <= a && a < r.up) {
                 sum -= 1;
             }
         }
         cout << r.low << " " << r.up << "\n";
-        sum += r.up - r.low + 1;
+        sum += r.up - r.low;
     }
 
     cout << sum << '\n';
