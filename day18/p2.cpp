@@ -82,7 +82,7 @@ void solve(string filename) {
     set<Point> a;
     int sa = 0;
 
-    int min_x = 0, max_x = 0, min_y = 0, max_y = 0, min_z = 0, max_z = 0;
+    int min_x = 10, max_x = 0, min_y = 10, max_y = 0, min_z = 10, max_z = 0;
     for (string ln : lns) {
         sa += 6;
         int x, y, z;
@@ -109,14 +109,6 @@ void solve(string filename) {
             }
         }
     }
-
-    min_x -= 1;
-    max_x += 1;
-    min_y -= 1;
-    max_y += 1;
-    min_z -= 1;
-    max_z += 1;
-
     int iter = 0;
 
     for (int x = min_x; x <= max_x; ++x) {
