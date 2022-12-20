@@ -16,14 +16,6 @@ struct Valve {
     int flow;
 };
 
-int getPressure(int state, const vector<ValveTemp> &valves) {
-    int sum = 0;
-    for (int i = 0; i < valves.size(); ++i) {
-        sum += valves[i].flow * !!(state & (1 << i));
-    }
-    return sum;
-}
-
 const int MINUTES = 30;
 const int PLAYERS = 1;
 
