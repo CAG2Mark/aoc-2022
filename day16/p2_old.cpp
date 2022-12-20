@@ -99,8 +99,8 @@ void solve(string filename) {
         cout << i << "\n";
         vector<vector<int>> buf(VALVES, vector<int>(1 << NON_ZERO, -1));
 
-        for (int j = 0; j < VALVES; ++j) {
-            const Valve &val = valves[j];
+        for (int k = 0; k < VALVES; ++k) {
+            const Valve &val = valves[k];
             for (int k = 0; k < 1 << NON_ZERO; ++k) {
                 int max_val = STATE_PRESSURES[k];
 
@@ -110,8 +110,8 @@ void solve(string filename) {
                 }
 
                 // case: switch current on, if it is a non-zero one
-                if (j < NON_ZERO) {
-                    int new_state = k | (1 << j);
+                if (k < NON_ZERO) {
+                    int new_state = k | (1 << k);
                     max_val = max(max_val, states[val.id][new_state]);
                 }
 

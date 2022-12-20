@@ -4,8 +4,6 @@
 
 using namespace std;
 
-const int MINUTES = 26;
-
 struct ValveTemp {
     string id;
     vector<string> neighbours;
@@ -25,6 +23,9 @@ int getPressure(int state, const vector<ValveTemp> &valves) {
     }
     return sum;
 }
+
+const int MINUTES = 26;
+const int PLAYERS = 2;
 
 void solve(string filename) {
     vector<ValveTemp> valves_list;
@@ -49,8 +50,6 @@ void solve(string filename) {
         }
     }
 
-    int NUM_VALVES = valves_list.size();
-
     int NON_ZERO = non_zero_v.size();
 
     // convert to IDs
@@ -67,7 +66,6 @@ void solve(string filename) {
     }
 
     int VALVES = valves_list.size();
-    VALVES *= VALVES;
 
     vector<Valve> valves(VALVES);
     for (auto &v : valves_list) {
@@ -79,78 +77,44 @@ void solve(string filename) {
     }
 
     // dp
-    vector<vector<int>> states(VALVES, vector<int>(1 << NON_ZERO, -1));
+    vector<vector<int>> states(VALVES, vector<int>(1 << NON_ZERO, 0));
 
-    vector<int> STATE_PRESSURES(1 << NON_ZERO, -1);
-
-    for (int i = 0; i < STATE_PRESSURES.size(); ++i) {
-        STATE_PRESSURES[i] = getPressure(i, non_zero_v);
-    }
-
-    for (int i = 0; i < VALVES; ++i) {
-        // generate_states(non_zero_v, valves, states[get<0>(v)]);
-        vector<int> &vec = states[i];
-        for (int i = 0; i < vec.size(); ++i) {
-            vec[i] = STATE_PRESSURES[i];
-        }
-    }
-
-    for (int i = 1; i < MINUTES; ++i) {
-        cout << i << "\n";
+    for (int i = 1; i < MINUTES * PLAYERS; ++i) {
         vector<vector<int>> buf(VALVES, vector<int>(1 << NON_ZERO, 0));
 
-        for (int i = 0; i < VALVES; ++i) {
-            int v1 = i % NUM_VALVES;
-            int v2 = i / NUM_VALVES;
-            const Valve &val1 = valves[v1];
-            const Valve &val2 = valves[v2];
-
-            for (int j = 0; j < 1 << NON_ZERO; ++j) {
-                int max_val = STATE_PRESSURES[j];
-
-                // both move
-                for (int adj1 : val1.neighbours) {
-                    for (int adj2 : val2.neighbours) {
-                        max_val = max(states[adj2 * NUM_VALVES + adj1][j], max_val);
-                    }
+        for (int j = 0; j < VALVES; ++j) {
+            const Valve &val = valves[j];
+            for (int k = 0; k < 1 << NON_ZERO; ++k) {
+                if (i % MINUTES == 0) {
+                    buf[j][k] = states[id_map["AA"]][k];
+                    continue;
                 }
 
-                // person switch, elephant move
-                int new_state = j;
-                if (v1 < NON_ZERO) {
-                    new_state |= (1 << v1);
-                }
-                for (int adj2 : val2.neighbours) {
-                    max_val = max(states[adj2 * NUM_VALVES + v1][new_state], max_val);
-                }
+                int max_val = 0;
 
-                // elephant switch, person move
-                new_state = j;
-                if (v2 < NON_ZERO) {
-                    new_state |= (1 << v2);
-                }
-                for (int adj1 : val1.neighbours) {
-                    max_val = max(states[v2 * NUM_VALVES + adj1][new_state], max_val);
+                // case: move to adjacent
+                for (int adj : val.neighbours) {
+                    max_val = max(max_val, states[adj][k]);
                 }
 
                 // case: switch current on, if it is a non-zero one
-                new_state = j;
-                if (v1 < NON_ZERO) {
-                    new_state |= (1 << v1);
+                if (j < NON_ZERO) {
+                    int new_state = k | (1 << j);
+                    if (new_state > k) {
+                        int add_press = valves[j].flow * (i % MINUTES);
+                        max_val =
+                            max(max_val, add_press + states[j][new_state]);
+                    }
                 }
-                if (v2 < NON_ZERO) {
-                    new_state |= (1 << v2);
-                }
-                max_val = max(max_val, states[i][new_state]);
 
-                int new_val = STATE_PRESSURES[j] + max_val;
-                buf[i][j] = new_val;
+                buf[j][k] = max_val;
             }
         }
         states = buf;
     }
+    cout << states[id_map["AA"]][0] << "\n";
 
-    cout << states[id_map["AA"] * NUM_VALVES + id_map["AA"]][0] << "\n";
+    // cout << getPressure(0, non_zero_v) << "\n";
 }
 
 int main() {
