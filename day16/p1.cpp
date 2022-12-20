@@ -4,8 +4,6 @@
 
 using namespace std;
 
-const int MINUTES = 30;
-
 struct ValveTemp {
     string id;
     vector<string> neighbours;
@@ -25,6 +23,9 @@ int getPressure(int state, const vector<ValveTemp> &valves) {
     }
     return sum;
 }
+
+const int MINUTES = 30;
+const int PLAYERS = 1;
 
 void solve(string filename) {
     vector<ValveTemp> valves_list;
@@ -74,54 +75,43 @@ void solve(string filename) {
             neighbours.push_back(id_map[a]);
         valves[id] = { id, neighbours, v.flow };
     }
-    
-    
 
     // dp
-    vector<vector<int>> states(VALVES, vector<int>(1 << NON_ZERO, -1));
+    vector<vector<int>> states(VALVES, vector<int>(1 << NON_ZERO, 0));
 
-
-    vector<int> STATE_PRESSURES(1 << NON_ZERO, -1);
-
-    for (int i = 0; i < STATE_PRESSURES.size(); ++i) {
-        STATE_PRESSURES[i] = getPressure(i, non_zero_v);
-    }
-
-    for (int i = 0; i < VALVES; ++i) {
-        // generate_states(non_zero_v, valves, states[get<0>(v)]);
-        vector<int> &vec = states[i];
-        for (int i = 0; i < vec.size(); ++i) {
-            vec[i] = STATE_PRESSURES[i];
-        }
-    }
-
-    for (int i = 1; i < MINUTES; ++i) {
-        cout << i << "\n";
-        vector<vector<int>> buf(VALVES, vector<int>(1 << NON_ZERO, -1));
+    for (int i = 1; i < MINUTES * PLAYERS; ++i) {
+        vector<vector<int>> buf(VALVES, vector<int>(1 << NON_ZERO, 0));
 
         for (int j = 0; j < VALVES; ++j) {
             const Valve &val = valves[j];
             for (int k = 0; k < 1 << NON_ZERO; ++k) {
-                int max_val = STATE_PRESSURES[k];
+                if (i % MINUTES == 0) {
+                    buf[j][k] = states[id_map["AA"]][k];
+                    continue;
+                }
+
+                int max_val = 0;
 
                 // case: move to adjacent
                 for (int adj : val.neighbours) {
-                    max_val = max(states[adj][k], max_val);
+                    max_val = max(max_val, states[adj][k]);
                 }
 
                 // case: switch current on, if it is a non-zero one
                 if (j < NON_ZERO) {
                     int new_state = k | (1 << j);
-                    max_val = max(max_val, states[val.id][new_state]);
+                    if (new_state > k) {
+                        int add_press = valves[j].flow * (i % MINUTES);
+                        max_val =
+                            max(max_val, add_press + states[j][new_state]);
+                    }
                 }
 
-                int new_val = STATE_PRESSURES[k] + max_val;
-                buf[val.id][k] = new_val;
+                buf[j][k] = max_val;
             }
         }
         states = buf;
     }
-
     cout << states[id_map["AA"]][0] << "\n";
 
     // cout << getPressure(0, non_zero_v) << "\n";
