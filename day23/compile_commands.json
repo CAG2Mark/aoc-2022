@@ -1,0 +1,18 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-c",
+      "-g",
+      "-std=c++17",
+      "-O2",
+      "-I../utils",
+      "-o",
+      "p1.o",
+      "p1.cpp"
+    ],
+    "directory": "/storage/mark/Repos/aoc-2022/day23",
+    "file": "/storage/mark/Repos/aoc-2022/day23/p1.cpp",
+    "output": "/storage/mark/Repos/aoc-2022/day23/p1.o"
+  }
+]
