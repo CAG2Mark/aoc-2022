@@ -104,7 +104,6 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait, int best = 2
 
     set<tuple<int, int>> cur = { { -1, 0 } };
 
-    int iters = 0;
     for (int i = 0; i < best; ++i) {
         const vector<vector<Tile>> &map = maps[(i + initial_wait) % maps.size()];
 
@@ -114,14 +113,12 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait, int best = 2
             auto n = neighbours(map, p);
             for (auto &q : n) {
                 if (q == dest)
-                    return iters;
+                    return i;
                 next.insert(q);
             }
         }
 
         if (next.size() == 0) return -100000000;
-
-        ++iters;
         // cout << iters << '\n';
         // cout << cur.size() << "\n";
         cur = next;
@@ -168,11 +165,11 @@ void solve(string filename) {
 
     // print_map(maps[1]);
 
-    int m = 2000;
+    int m = 500;
     int best_start = -1;
     for (int i = 0; i < iters; ++i) {
         // cout << "WAIT " << i << "\n";
-        int a = bfs(maps, i, m) + i + 1;
+        int a = bfs(maps, i, m - i - 1) + i + 1;
         if (a < 0) continue;
         if (a < m) {
             m = a;

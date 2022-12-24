@@ -104,7 +104,6 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait,
 
     set<tuple<int, int>> cur = { start };
 
-    int iters = 0;
     for (int i = 0; i < best; ++i) {
         const vector<vector<Tile>> &map =
             maps[(i + initial_wait) % maps.size()];
@@ -115,7 +114,7 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait,
             auto n = neighbours(map, p);
             for (auto &q : n) {
                 if (q == dest)
-                    return iters;
+                    return i;
                 next.insert(q);
             }
         }
@@ -123,7 +122,6 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait,
         if (next.size() == 0)
             return -100000000;
 
-        ++iters;
         // cout << iters << '\n';
         // cout << cur.size() << "\n";
         cur = next;
@@ -131,7 +129,7 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait,
     return -100000000;
 }
 
-tuple<int, int> get_best(const vector<vector<vector<Tile>>> &maps, tuple<int, int> start, tuple<int, int> dest, int start_wait) {
+int get_best(const vector<vector<vector<Tile>>> &maps, tuple<int, int> start, tuple<int, int> dest, int start_wait) {
     int ROWS = maps[0].size();
     int COLS = maps[0][0].size();
 
@@ -141,7 +139,7 @@ tuple<int, int> get_best(const vector<vector<vector<Tile>>> &maps, tuple<int, in
     int best_start = -1;
     for (int i = 0; i < maps.size(); ++i) {
         // cout << "WAIT " << i << "\n";
-        int a = bfs(maps, i + start_wait, start, dest, m) + i + 1;
+        int a = bfs(maps, i + start_wait, start, dest, m - i - 1) + i + 1;
         if (a < 0) 
             continue;
         if (a < m) {
@@ -149,7 +147,7 @@ tuple<int, int> get_best(const vector<vector<vector<Tile>>> &maps, tuple<int, in
             best_start = i;
         }
     }
-    return { m, best_start };
+    return m;
 }
 
 void solve(string filename) {
@@ -189,15 +187,17 @@ void solve(string filename) {
         map = advance(map);
     }
 
-    auto [b1, i1] = get_best(maps, {-1, 0}, {ROWS - 1, COLS - 1}, 0);
+    int b1 = get_best(maps, {-1, 0}, {ROWS - 1, COLS - 1}, 0);
     // b1 %= iters;
-    cout << b1 << " " << i1 << "\n";
+    cout << b1  << "\n";
 
-    auto [b2, i2] = get_best(maps, {ROWS, COLS - 1}, {0, 0}, (b1) % iters);
+    int b2 = get_best(maps, {ROWS, COLS - 1}, {0, 0}, (b1) % iters);
 
-    cout << b2 << " " << i2 << "\n";
+    cout << b2 << "\n";
 
-    auto [b3, i3] = get_best(maps, {-1, 0}, {ROWS - 1, COLS - 1}, (b1 + b2) % iters);
+    int b3 = get_best(maps, {-1, 0}, {ROWS - 1, COLS - 1}, (b1 + b2) % iters);
+
+    cout << b3 << "\n";
 
     cout << b1 + b2 + b3 << "\n";
 }
