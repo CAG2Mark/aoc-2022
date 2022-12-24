@@ -190,13 +190,8 @@ void solve(string filename) {
 
     for (long long i = 0; i < NUM_BLOCKS; ++i) {
         if (i % 5 == 0) {
-            if (w_pos == prev_w) {
-                cout << i << "\n";
-                cout << prev_w << "\n";
-                break;
-            }
             prev_w = w_pos;
-            if (w_pos == 9228) {
+            if (w_pos == 18) {
                 cout << i << "\n";
                 cout << prev_w << "\n";
                 cout << highest - prev_highest << "\n";

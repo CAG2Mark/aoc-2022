@@ -5,12 +5,95 @@
 #include <tuple>
 #include <unordered_map>
 #include <vector>
+#include <numeric>
 
 std::vector<std::string> get_lines(std::string filename = "input");
 std::string strip_str(std::string str);
 bool string_is_whitespace(std::string str);
 std::vector<std::string> split_str(
     std::string inp, std::string delim, bool ignore_empty = false);
+
+template <typename T>
+T exp(T x, unsigned int p) {
+    T prod = 1;
+    while (p) {
+        if (p & 1)
+            prod = (prod * x);
+        x = x * x;
+        p >>= 1;
+    }
+    return prod;
+}
+
+template <typename T>
+T exp_mod(T x, unsigned int p, T m) {
+    T prod = 1;
+    T prev = x % m;
+    while (p) {
+        if (p & 1)
+            prod = (prod * prev) % m;
+        prev = (prev * prev) % m;
+        p >>= 1;
+    }
+    return prod;
+}
+
+template <>
+unsigned long long exp_mod(unsigned long long x, unsigned int p, unsigned long long m) {
+    unsigned __int128 prod = 1;
+    unsigned __int128 prev = x % m;
+    while (p) {
+        if (p & 1)
+            prod = (prod * prev) % m;
+        prev = (prev * prev) % m;
+        p >>= 1;
+    }
+    return prod;
+}
+
+template <typename T>
+T gcd(T a, T b) {
+    while (b) {
+        T temp = a % b;
+        a = b;
+        b = temp;
+    }
+    return a;
+}
+
+// prevx * a + prevy * b = gcd(a, b)
+template <typename T>
+std::tuple<T, T, T> egcd(T a, T b) {
+    T prevx = 1;
+    T x = 0;
+    T prevy = 0;
+    T y = 1;
+    while (b) {
+        T q = a / b;
+
+        T temp = prevx - q * x;
+        prevx = x;
+        x = temp;
+
+        temp = prevy - q * y;
+        prevy = y;
+        y = temp;
+
+        temp = a % b;
+        a = b;
+        b = temp;
+    }
+
+    return {a, prevx, prevy};
+}
+
+// a * RET = 1 (mod p)
+template <typename T>
+T modular_inverse(T a, T p) {
+    auto [g, q, r] = egcd(a, p);
+    return q;
+}
+
 
 // debug tools
 template <typename T>

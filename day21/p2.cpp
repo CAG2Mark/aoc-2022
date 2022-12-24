@@ -111,9 +111,6 @@ void solve(string filename) {
     while (node->id != "humn") {
         bool success = true;
 
-        if (node->left == nullptr || node->right == nullptr)
-            cout << "ERROR!\n";
-
         long long l = node->left->eval(success);
         success = true;
         long long r = node->right->eval(success);

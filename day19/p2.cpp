@@ -1,6 +1,5 @@
 #include "../utils/aocutils.h"
 #include <bits/stdc++.h>
-#include <regex>
 
 using namespace std;
 
