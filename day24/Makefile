@@ -1,6 +1,6 @@
 CC = clang++
 CFLAGS = -g -std=c++17
-CFLAGS += -O2
+CFLAGS += -O3
 CFLAGS += -I../utils
 
 .PHONY: all clean
