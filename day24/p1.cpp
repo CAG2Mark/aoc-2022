@@ -97,7 +97,8 @@ void print_map(const vector<vector<Tile>> &map, int r = -1, int c = -1) {
     cout << "\n";
 }
 
-int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait, int best = 2000) {
+int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait,
+    int best = 2000) {
     int ROWS = maps[0].size();
     int COLS = maps[0][0].size();
     tuple<int, int> dest = { ROWS - 1, COLS - 1 };
@@ -105,7 +106,8 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait, int best = 2
     set<tuple<int, int>> cur = { { -1, 0 } };
 
     for (int i = 0; i < best; ++i) {
-        const vector<vector<Tile>> &map = maps[(i + initial_wait) % maps.size()];
+        const vector<vector<Tile>> &map =
+            maps[(i + initial_wait) % maps.size()];
 
         set<tuple<int, int>> next = {};
 
@@ -118,7 +120,8 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait, int best = 2
             }
         }
 
-        if (next.size() == 0) return -100000000;
+        if (next.size() == 0)
+            return -100000000;
         // cout << iters << '\n';
         // cout << cur.size() << "\n";
         cur = next;
@@ -170,14 +173,14 @@ void solve(string filename) {
     for (int i = 0; i < iters; ++i) {
         // cout << "WAIT " << i << "\n";
         int a = bfs(maps, i, m - i - 1) + i + 1;
-        if (a < 0) continue;
+        if (a < 0)
+            continue;
         if (a < m) {
             m = a;
             best_start = i;
         }
     }
     cout << m << "\n";
-
 }
 
 int main() {

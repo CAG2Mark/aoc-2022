@@ -129,7 +129,8 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait,
     return -100000000;
 }
 
-int get_best(const vector<vector<vector<Tile>>> &maps, tuple<int, int> start, tuple<int, int> dest, int start_wait) {
+int get_best(const vector<vector<vector<Tile>>> &maps, tuple<int, int> start,
+    tuple<int, int> dest, int start_wait) {
     int ROWS = maps[0].size();
     int COLS = maps[0][0].size();
 
@@ -140,7 +141,7 @@ int get_best(const vector<vector<vector<Tile>>> &maps, tuple<int, int> start, tu
     for (int i = 0; i < maps.size(); ++i) {
         // cout << "WAIT " << i << "\n";
         int a = bfs(maps, i + start_wait, start, dest, m - i - 1) + i + 1;
-        if (a < 0) 
+        if (a < 0)
             continue;
         if (a < m) {
             m = a;
@@ -187,15 +188,16 @@ void solve(string filename) {
         map = advance(map);
     }
 
-    int b1 = get_best(maps, {-1, 0}, {ROWS - 1, COLS - 1}, 0);
+    int b1 = get_best(maps, { -1, 0 }, { ROWS - 1, COLS - 1 }, 0);
     // b1 %= iters;
-    cout << b1  << "\n";
+    cout << b1 << "\n";
 
-    int b2 = get_best(maps, {ROWS, COLS - 1}, {0, 0}, (b1) % iters);
+    int b2 = get_best(maps, { ROWS, COLS - 1 }, { 0, 0 }, (b1) % iters);
 
     cout << b2 << "\n";
 
-    int b3 = get_best(maps, {-1, 0}, {ROWS - 1, COLS - 1}, (b1 + b2) % iters);
+    int b3 =
+        get_best(maps, { -1, 0 }, { ROWS - 1, COLS - 1 }, (b1 + b2) % iters);
 
     cout << b3 << "\n";
 
