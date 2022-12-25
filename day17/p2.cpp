@@ -1,12 +1,6 @@
 #include "../utils/aocutils.h"
 #include <bits/stdc++.h>
 
-/*
-
-This is not a proper solver. The part 2 code was just to help me detect
-repetitions and compute some numbers for me to crunch in a calculator.
-
-*/
 using namespace std;
 
 const int MAP_WIDTH = 7;
@@ -152,7 +146,7 @@ void print(board_dt &board, int x, int y, int block_type, int top = -1) {
     cout << "\n";
 }
 
-int rowHash(vector<int> row) {
+int rowHash(const array<int, MAP_WIDTH> &row) {
     int sum = 0;
     int pow = 1;
     for (int i : row) {
@@ -162,8 +156,12 @@ int rowHash(vector<int> row) {
     return sum;
 }
 
+const int CHECK_LEN = 1000;
+const int KEEP_LEN = 1000;
+typedef array<int, CHECK_LEN> repeat_t;
+
 void solve(string filename) {
-    const int NUM_BLOCKS = 100000000;
+    long long int NUM_BLOCKS = 1000000000000;
 
     vector<string> lns = get_lines(filename);
 
@@ -185,28 +183,55 @@ void solve(string filename) {
 
     int x, y;
 
-    int prev_w = -1;
-    int prev_highest = 0;
+    deque<repeat_t> signatures;
+    deque<int> highests;
+
+    bool skip = false;
+
+    long long delta = 0;
 
     for (long long i = 0; i < NUM_BLOCKS; ++i) {
-        if (i % 5 == 0) {
-            prev_w = w_pos;
-            if (w_pos == 18) {
-                cout << i << "\n";
-                cout << prev_w << "\n";
-                cout << highest - prev_highest << "\n";
-                prev_highest = highest;
-                cout << highest << "\n";
-                cout << "\n";
+        // cout << i << " " << NUM_BLOCKS << "\n";
+
+        if (!skip && highest > CHECK_LEN && i % 5 == 0) {
+            repeat_t sig_new;
+            for (int j = 0; j < CHECK_LEN; ++j) {
+                sig_new[j] = rowHash(board[highest - j - 1]);
             }
-            if (i == 5174875)
-                break;
+            // cout << sig_new << "\n";
+
+            int len = -1;
+            for (int j = 0; j < signatures.size(); ++j) {
+                if (sig_new != signatures[j])
+                    continue;
+
+                len = signatures.size() - j;
+
+                // print(board, -1, -1, 0, 50);
+            }
+            if (len != -1) {
+                int d = len * 5;
+                long long rem = (NUM_BLOCKS - i) / d;
+                i += d * rem;
+                long long diff = highest - highests[highests.size() - len];
+                delta = diff * rem;
+                skip = true;
+            }
+
+            if (signatures.size() >= KEEP_LEN) {
+                signatures.pop_front();
+                highests.pop_front();
+            }
+
+            signatures.push_back(sig_new);
+            highests.push_back(highest);
         }
 
         x = 2;
         y = board.size() - 4;
         spawn_block = false;
         // print(board, x, y, block);
+
         while (true) {
 
             bool w = wind[w_pos];
@@ -237,7 +262,7 @@ void solve(string filename) {
         }
     }
 
-    cout << highest << "\n";
+    cout << highest + delta << "\n";
 }
 
 int main() {
@@ -246,12 +271,9 @@ int main() {
 
     if (ifstream("input.test")) {
         cout << "TEST INPUT OUTPUT\n---------------------\n";
-        // solve("input.test");
+        solve("input.test");
         cout << "\n";
     }
     cout << "OUTPUT\n---------------------\n";
     solve("input");
-
-    cout << "NOTE: THIS IS NOT A PROPER SOLVER! READ THE COMMENTS FOR MORE "
-            "INFO\n";
 }
