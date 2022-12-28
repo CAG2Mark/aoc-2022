@@ -20,4 +20,4 @@ To run part 1, run `make r1`. For part 2, run `make r2`. If you are on Windows, 
 g++ p1.cpp ../utils/aocutils.o -o p1.exe -O2 -std=c++17
 ```
 # Automatic Input Fetcher
-Navigate to the Advent of Code website, log in, then go to Inspect Element -> Network. Click on the first request, then go to Cookies, then copy your session cookie and paste it into a file called `session` in the root directory. Then, you can run `python3 ./get_input.py X` to auto-fetch the input for day `X`.
+Navigate to the Advent of Code website, log in, then go to Inspect Element -> Network, then refresh the page. Click on the first request, then go to Cookies, then copy your session cookie and paste it into a file called `session` in the root directory. Then, you can run `python3 ./get_input.py X` to auto-fetch the input for day `X`.
