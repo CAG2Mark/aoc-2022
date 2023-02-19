@@ -103,20 +103,30 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait,
     int COLS = maps[0][0].size();
     tuple<int, int> dest = { ROWS - 1, COLS - 1 };
 
-    set<tuple<int, int>> cur = { { -1, 0 } };
+    vector<tuple<int, int>> cur = { { -1, 0 } };
+
+    vector<int> nexts((ROWS+1)*(COLS+1), -1);
 
     for (int i = 0; i < best; ++i) {
         const vector<vector<Tile>> &map =
             maps[(i + initial_wait) % maps.size()];
 
-        set<tuple<int, int>> next = {};
+        vector<tuple<int, int>> next = {};
 
         for (auto &p : cur) {
             auto n = neighbours(map, p);
+
             for (auto &q : n) {
                 if (q == dest)
                     return i;
-                next.insert(q);
+
+                auto [r, c] = q;
+                int pos = (r+1)*COLS + (c+1);
+                
+                if (nexts[pos] < i)
+                    next.push_back(q);
+
+                nexts[pos] = i;
             }
         }
 
@@ -124,7 +134,7 @@ int bfs(const vector<vector<vector<Tile>>> &maps, int initial_wait,
             return -100000000;
         // cout << iters << '\n';
         // cout << cur.size() << "\n";
-        cur = next;
+        cur = std::move(next);
     }
     return -100000000;
 }

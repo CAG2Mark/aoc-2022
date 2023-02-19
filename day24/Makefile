@@ -1,4 +1,4 @@
-CC = clang++
+CC = g++
 CFLAGS = -g -std=c++17
 CFLAGS += -O3
 CFLAGS += -I../utils
